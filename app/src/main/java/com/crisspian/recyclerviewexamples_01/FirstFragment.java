@@ -5,17 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.crisspian.recyclerviewexamples_01.adapter.ItemAdapter;
+import com.crisspian.recyclerviewexamples_01.databinding.FragmentFirstBinding;
 import com.crisspian.recyclerviewexamples_01.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstFragment extends Fragment {
+public class FirstFragment extends Fragment implements ItemAdapter.SendItem {
+
+    private FragmentFirstBinding binding;
 
     @Override
     public View onCreateView(
@@ -23,7 +31,14 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        binding = FragmentFirstBinding.inflate(inflater, container, false);
+
+        RecyclerView mRecyclerView = binding.rvItem;
+        ItemAdapter adapter = new ItemAdapter(returnItemList(), getContext(),this);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -61,5 +76,15 @@ public class FirstFragment extends Fragment {
         Item item12 = new Item("Wesley Armstrong","https://unsplash.com/photos/q0wqYpyWDpc/download?force=true&w=640");
         listItem.add(item12);
         return listItem;
+    }
+
+    @Override
+    public void sendItem(Item item) {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", item.getItemDescription());
+        bundle.putString("url", item.getUrlImage());
+        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
+
+        //Toast.makeText(getContext(), item.getUrlImage(), Toast.LENGTH_SHORT).show();
     }
 }
