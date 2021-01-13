@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.crisspian.recyclerviewexamples_01.adapter.ItemAdapter;
@@ -34,7 +35,9 @@ public class FirstFragment extends Fragment implements ItemAdapter.IpassElement 
         super.onViewCreated(view, savedInstanceState);
         ItemAdapter adapter = new ItemAdapter(returnItemList(),this);
         mBinding.rvItem.setAdapter(adapter);
-        mBinding.rvItem.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mBinding.rvItem.setLayoutManager(new GridLayoutManager(getContext(),2));
+        mBinding.rvItem.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        //mBinding.rvItem.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
 
